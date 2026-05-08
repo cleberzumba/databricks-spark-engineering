@@ -206,11 +206,7 @@ targets_data = [
 targets = spark.createDataFrame(targets_data, ["date", "store", "target"])
 
 # Join on MULTIPLE keys (date AND store)
-result = sales.join(
-    targets,
-    (sales.date == targets.date) & (sales.store == targets.store),
-    "inner"
-)
+result = sales.join(targets, (sales.date == targets.date) & (sales.store == targets.store), "inner")
 result.show()
 
 # Alternative syntax when column names match
@@ -243,7 +239,7 @@ result2.show()
 # COMMAND ----------
 
 # Regular join (may shuffle both sides)
-regular_join = employees.join(departments, "dept_id")
+regular_join = employees.join(departments, "dept_id").show()
 
 # Broadcast join (broadcasts send small departments to all executors, avoids expensive shuffle operation)
 broadcast_join = employees.join(broadcast(departments), "dept_id")

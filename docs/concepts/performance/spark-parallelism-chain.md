@@ -122,5 +122,3 @@ It doesn't matter how many partitions you have — the real execution speed depe
 - **Adaptive Query Execution (AQE)** — dynamic partition coalescing
 - **Executor memory anatomy** — how memory is split across the threads
 - **Stages and tasks** — how Spark groups work into execution units
-
----

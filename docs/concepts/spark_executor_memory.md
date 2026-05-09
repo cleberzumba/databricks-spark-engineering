@@ -218,13 +218,13 @@ spark.memory.storageFraction   = "0.7"  # prioritize Storage (cache)
 
 | Symptom | Root cause | Configuration to adjust |
 |---|---|---|
-| Generic OOM in executor logs | Heap too small | `spark.executor.memory` ⬆️ |
-| Container killed by YARN/K8s | Off-heap (overhead) too small | `spark.executor.memoryOverhead` ⬆️ |
+| Generic OOM in executor logs | Heap too small | `spark.executor.memory`  |
+| Container killed by YARN/K8s | Off-heap (overhead) too small | `spark.executor.memoryOverhead`  |
 | Long GC pauses, slow tasks | GC pressure on heap | `spark.memory.offHeap` enable + size |
-| `cache()` being evicted constantly | Storage region too small | `spark.memory.storageFraction` ⬆️ |
-| Shuffle/sort spilling to disk | Execution region too small | `spark.memory.storageFraction` ⬇️ |
-| OOM during Python UDFs | User Memory too small | `spark.memory.fraction` ⬇️ |
-| OOM in driver | Driver heap too small | `spark.driver.memory` ⬆️ |
+| `cache()` being evicted constantly | Storage region too small | `spark.memory.storageFraction`  |
+| Shuffle/sort spilling to disk | Execution region too small | `spark.memory.storageFraction`  |
+| OOM during Python UDFs | User Memory too small | `spark.memory.fraction`  |
+| OOM in driver | Driver heap too small | `spark.driver.memory`  |
 
 ---
 

@@ -302,7 +302,3 @@ spark.driver.maxResultSize   = "4g"
 - **Garbage Collection (GC)** — affects heap; off-heap bypasses it
 - **Adaptive Query Execution (AQE)** — automatic tuning of partitions and joins
 - **Catalyst Optimizer** — query plan optimization, runs in Driver memory
-
----
-
-*Tags: #ApacheSpark #PySpark #Databricks #DataEngineering #PerformanceTuning #MemoryManagement*

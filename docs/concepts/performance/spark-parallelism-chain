@@ -1,0 +1,126 @@
+# Spark Parallelism Chain
+
+> How Apache Spark actually parallelizes data — from partitions to CPU cores.
+
+---
+
+## The Chain in One Line
+
+```
+1 partition → 1 task → 1 thread → 1 core
+```
+
+---
+
+## Each Link Explained
+
+```
+┌──────────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│  Partition   │ →  │   Task   │ →  │  Thread  │ →  │   Core   │
+│              │    │          │    │          │    │          │
+│ Slice of     │    │ Unit of  │    │ In       │    │ CPU unit │
+│ data         │    │ work     │    │ executor │    │          │
+│              │    │          │    │ pool     │    │          │
+└──────────────┘    └──────────┘    └──────────┘    └──────────┘
+```
+
+| Component | What it is |
+|---|---|
+| **Partition** | A slice of the data |
+| **Task** | A unit of work — processes one partition |
+| **Thread** | Lives inside the JVM executor pool — runs the task |
+| **Core** | The physical CPU unit that executes the thread |
+
+---
+
+## How It Works Inside an Executor
+
+With `spark.executor.cores = 4`:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  Executor (JVM process)                                 │
+│                                                         │
+│  Partition 1  →  Task 1  →  Thread 1  →  Core 1         │
+│  Partition 2  →  Task 2  →  Thread 2  →  Core 2         │
+│  Partition 3  →  Task 3  →  Thread 3  →  Core 3         │
+│  Partition 4  →  Task 4  →  Thread 4  →  Core 4         │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+
+Pool of 4 threads = 4 parallel tasks per executor
+```
+
+---
+
+## Cluster-Level View
+
+**Setup:**
+
+```
+10 executors × 4 cores = 40 total cores
+spark.executor.cores = 4
+```
+
+**Result:**
+
+- Each executor creates a pool of **4 threads**
+- Total: **40 threads = 40 parallel tasks** across the cluster
+
+---
+
+## What if You Have More Partitions Than Cores?
+
+**Scenario:** DataFrame has 200 partitions, cluster has 40 cores.
+
+```
+200 partitions  →  200 tasks generated
+                →  40 run in parallel
+                →  5 "waves" until completion
+```
+
+The remaining tasks **queue up** and wait for free threads.
+
+---
+
+## The Golden Rule
+
+> **Parallelism per executor = `spark.executor.cores`**
+
+It doesn't matter how many partitions you have — the real execution speed depends on how many cores are available to execute the threads.
+
+---
+
+## Why This Matters for Tuning
+
+| Symptom | Likely cause |
+|---|---|
+| CPUs idle, slow job | `spark.executor.cores` too low |
+| Tasks queueing forever | Too few cores for partition count |
+| Memory contention | `spark.executor.cores` too high (4–5 is the sweet spot) |
+| Overhead per task | Too many partitions for the cluster size |
+
+---
+
+## Key Takeaways
+
+1. **Partitions are the unit of parallelism.** More partitions ≠ faster — only if you have cores to execute them.
+
+2. **Tasks are the unit of work.** One task processes exactly one partition.
+
+3. **Threads execute tasks.** Each executor maintains a pool of threads sized by `spark.executor.cores`.
+
+4. **Cores are the physical limit.** A thread can only run when a core is free.
+
+5. **The sweet spot for `spark.executor.cores` is 4–5.** Higher values increase memory contention and GC pressure.
+
+---
+
+## Related Concepts
+
+- **Partitioning strategies** — `repartition()`, `coalesce()`, partition by column
+- **Adaptive Query Execution (AQE)** — dynamic partition coalescing
+- **Executor memory anatomy** — how memory is split across the threads
+- **Stages and tasks** — how Spark groups work into execution units
+
+---

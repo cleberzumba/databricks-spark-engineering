@@ -1,7 +1,5 @@
 # Cache, Persist and Storage Levels in Apache Spark
 
-> Study notes for the **Databricks Certified Associate Developer for Apache Spark** exam.
-
 ---
 
 ## 1. Overview
@@ -247,7 +245,3 @@ df.persist()  # uses default
 ### Databricks
 
 - [Databricks — Optimize performance with caching](https://docs.databricks.com/en/optimizations/disk-cache.html)
-
----
-
-*Notes by [@cleberzumba](https://github.com/cleberzumba) — Data Engineer focused on Databricks, Spark and Lakehouse architecture.*

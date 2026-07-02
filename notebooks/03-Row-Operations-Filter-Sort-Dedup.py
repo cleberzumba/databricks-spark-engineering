@@ -121,13 +121,13 @@ result2.show()
 # MAGIC
 # MAGIC ### CRITICAL DIFFERENCES:
 # MAGIC
-# MAGIC | Feature              | sort()                          | orderBy()                  |
-# MAGIC |----------------------|---------------------------------|----------------------------|
-# MAGIC | **Syntax**           | Can use column names as strings | Prefers Column objects     |
-# MAGIC | **Multiple columns** | `sort("col1", "col2")`          | `orderBy("col1", "col2")`  |
-# MAGIC | **Descending**       | `sort(col("x").desc())`         | `orderBy(col("x").desc())` |
-# MAGIC | **Ascending param**  | `sort("col", ascending=False)`  | N/A - use desc()           |
-# MAGIC | **Recommendation**   | More Pythonic                   | More Java/Scala-like       |
+# MAGIC | Feature              | sort()                          | orderBy()                        |
+# MAGIC |----------------------|---------------------------------|----------------------------------|
+# MAGIC | **Syntax**           | Can use column names as strings | Prefers Column objects           |
+# MAGIC | **Multiple columns** | `sort("col1", "col2")`          | `orderBy("col1", "col2")`        |
+# MAGIC | **Descending**       | `sort(col("x").desc())`         | `orderBy(col("x").desc())`       |
+# MAGIC | **Ascending param**  | `sort("col", ascending=False)`  | orderBy("col", ascending=False)] |
+# MAGIC | **Recommendation**   | More Pythonic                   | More Java/Scala-like             |
 # MAGIC
 # MAGIC - Both do the SAME thing (sorting)
 
@@ -189,6 +189,8 @@ df.sort("department", "salary", ascending=[True, False]).show()
 
 # String syntax (simplest for same direction)
 df.orderBy("department", "salary").show()
+df.orderBy("department", "salary", ascending=[True, False]).show()
+
 
 # COMMAND ----------
 

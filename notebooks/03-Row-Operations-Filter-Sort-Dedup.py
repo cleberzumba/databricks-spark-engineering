@@ -256,7 +256,6 @@ df.na.drop()
 df.dropna(how="all").show()  
 df.na.drop("all")
 df.na.drop(how="all")
-df.dropna(how="all")
 
 # Drop rows with null in specific columns
 df.dropna(subset=["salary"]).show()

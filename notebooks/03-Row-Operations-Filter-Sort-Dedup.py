@@ -249,17 +249,19 @@ print("Original data:")
 df.show()
 
 # Drop rows with ANY null value in ANY column
-df.dropna().show()  # or df.na.drop()
+df.dropna().show()  
+df.na.drop()
 
-# Drop rows with ALL null values
-df.dropna(how="all").show()  # or df.na.drop("all")
+# Drop rows with ALL null values (missing values in every column)
+df.dropna(how="all").show()  
+df.na.drop("all")
+df.na.drop(how="all")
+df.dropna(how="all")
 
 # Drop rows with null in specific columns
 df.dropna(subset=["salary"]).show()
 
-df.na.drop("all")
-df.na.drop(how="all")
-df.dropna(how="all")
+
 
 # COMMAND ----------
 

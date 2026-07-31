@@ -52,6 +52,3 @@ A "16g" executor, as configured, actually reserves **22g** in reality. Ignoring 
 - Misdiagnosed GC pressure (blaming lack of heap, when it's actually lack of off-heap space for Tungsten to operate)
 
 Understanding this cascade is the difference between a job that suffers silent OOMs and one that runs stable in production.
-
----
-*Study notes — Databricks Certified Associate Developer for Apache Spark*
